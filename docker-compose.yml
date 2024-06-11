@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  snipeit:
+    image: snipe/snipe-it:latest
+    container_name: snipeit
+    environment:
+      - APP_KEY=base64:L2Z3C9jT3NxwQm2E6dBnNSQ3F9ZIb6bf2YFm9lHJp6M=
+      - APP_URL=http://localhost:8000
+      - DB_HOST=db
+      - DB_DATABASE=snipeit
+      - DB_USERNAME=snipeit
+      - DB_PASSWORD=snipeit_password
+      - DB_PORT=3306
+      - TZ=UTC
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    platform: linux/amd64  # Add platform specification
+
+  db:
+    image: mysql:8.0 # Updated MySQL version to 8.0
+    container_name: snipeit_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=snipeit
+      - MYSQL_USER=snipeit
+      - MYSQL_PASSWORD=snipeit_password
+    volumes:
+      - snipeit_db_data:/var/lib/mysql
+    platform: linux/amd64  # Add platform specification
+
+volumes:
+  snipeit_db_data:
